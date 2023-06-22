@@ -44,9 +44,11 @@ void step02() {
     Serial.println("°C");
 }
 
-void main(){
+int main() {
     setup();
     step01();
     step02();
     delay(5000);
+
+    return 0;
 }
