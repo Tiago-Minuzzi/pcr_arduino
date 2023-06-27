@@ -9,7 +9,7 @@ int RelePin2 = 3; // pino ao qual o Módulo Relé fan está conectado
 int limiteDisparo1 = 45;
 int limiteDisparo2 = 30;
 
-float temperature = temp.getTemp(); // calcula a temperatura
+//float temperature = temp.getTemp(); // calcula a temperatura
 
 void setup() {
     Serial.begin(9600);
@@ -19,6 +19,7 @@ void setup() {
 }
 
 void step01() {
+    float temperature = temp.getTemp(); // calcula a temperatura
     if (temperature < limiteDisparo1) {
         digitalWrite(RelePin1, HIGH);
     } else {
@@ -32,6 +33,7 @@ void step01() {
 }
 
 void step02() {
+    float temperature = temp.getTemp(); // calcula a temperatura
     if (temperature > limiteDisparo2) {
         digitalWrite(RelePin1, HIGH);
     } else {
