@@ -25,8 +25,8 @@ void loop() {
     int contador = 0;
 
     if (temperature < limiteDisparo1) {
-        digitalWrite(RelePin1, HIGH);
-        digitalWrite(RelePin2, LOW);
+        digitalWrite(RelePin1, HIGH); // liga/deixa ligado o aquecedor
+        digitalWrite(RelePin2, LOW); // deixa o fan desligado
         Serial.print("Aumentando a temp");
         delay(1000);
     } else if (temperature < (limiteDisparo1 + tolerancia ) && temperature > (tempManutencao - tolerancia)) {  
