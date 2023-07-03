@@ -6,6 +6,7 @@ int RelePin1 = 2; // pino ao qual o Módulo Relé fan está conectado
 int RelePin2 = 3; // pino ao qual o Módulo Relé aquecimento está conectado 
                     //
 int limiteDisparo1 = 38;
+int tempManutencao = 33
 int limiteDisparo2 = 25;
 int tolerancia = 1;
 
@@ -28,8 +29,8 @@ void loop() {
         digitalWrite(RelePin2, LOW);
         Serial.print("Aumentando a temp");
         delay(1000);
-    } else if (temperature < (limiteDisparo1 + tolerancia ) && temperature > limiteDisparo2) {  
-        digitalWrite(RelePin2, LOW); // ligar o fan
+    } else if (temperature < (limiteDisparo1 + tolerancia ) && temperature > tempManutencao) {  
+        digitalWrite(RelePin2, LOW); // desligar o fan
         digitalWrite(RelePin1, LOW); // desligar o aquecimento
         Serial.print("Mantendo");
         contador++;
@@ -42,7 +43,7 @@ void loop() {
         delay (10000); 
     }
 
-    //Imprimindo no monitor serial
+    // Imprimindo no monitor serial
     Serial.print("Temperatura: ");
     Serial.print(temperature);
     Serial.println("°C");
