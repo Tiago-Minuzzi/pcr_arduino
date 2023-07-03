@@ -29,7 +29,7 @@ void loop() {
         digitalWrite(RelePin2, LOW);
         Serial.print("Aumentando a temp");
         delay(1000);
-    } else if (temperature < (limiteDisparo1 + tolerancia ) && temperature > tempManutencao) {  
+    } else if (temperature < (limiteDisparo1 + tolerancia ) && temperature > (tempManutencao - tolerancia)) {  
         digitalWrite(RelePin2, LOW); // desligar o fan
         digitalWrite(RelePin1, LOW); // desligar o aquecimento
         Serial.print("Mantendo");
