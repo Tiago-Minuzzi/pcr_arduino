@@ -18,7 +18,8 @@ void setup() {
 }
  
 
-void loop() {
+int controller() {
+    
     float temperature = temp.getTemp(); // calcula a temperatura
 
     if  (temperature == target_temp) {
@@ -43,4 +44,10 @@ void loop() {
     Serial.print(temperature);
     Serial.println("°C");
     delay(1000);
+
+    return 0;
+}
+
+void loop() {
+    controller();
 }
