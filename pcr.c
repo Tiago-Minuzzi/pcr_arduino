@@ -5,8 +5,8 @@ Thermistor temp(1); // termistor conectado na porta A1 (cria o objeto)
 int RelePin1 = 2; // pino ao qual o Módulo Relé fan está conectado
 int RelePin2 = 3; // pino ao qual o Módulo Relé aquecimento está conectado 
                     
-int target_temp = 35
 int tolerancia = 1;
+bool halter0 = false;
 
 
 void setup() {
@@ -18,15 +18,28 @@ void setup() {
 }
  
 
-int controller() {
+int controller(int target_temp, int timef) {
     
     float temperature = temp.getTemp(); // calcula a temperatura
 
     if  (temperature == target_temp) {
+        int time0 = 1;
+        if (timef == -1) {
+            time0 = 0; 
+        }
         digitalWrite(RelePin1, LOW); // desligar o aquecimento
         digitalWrite(RelePin2, LOW); // desligar o fan
         Serial.print("Mantendo");
-        delay(1000);  
+        Serial.print(target_temp);
+        do {
+            Serial.print("Time");
+            Serial.print(time0);
+            if (time0 == timef) {
+                return 1;
+            }
+            time0++;
+        } while (time0 <= timef);
+        delay(1000);
     } else if (temperature < (target_temp - tolerancia)) {  
         digitalWrite(RelePin1, HIGH); // liga/deixa ligado o aquecedor
         digitalWrite(RelePin2, LOW); // deixa o fan desligado
@@ -49,5 +62,12 @@ int controller() {
 }
 
 void loop() {
-    controller();
+    if (halter0 == false) {
+        int f0 = controller(35,60);
+        if (f0 == 1) {
+            halter == true;
+        }
+    } else { 
+        controller(20,-1); 
+    }
 }
