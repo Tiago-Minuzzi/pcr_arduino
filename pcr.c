@@ -65,7 +65,7 @@ void loop() {
     if (halter0 == false) {
         int f0 = controller(35,60);
         if (f0 == 1) {
-            halter == true;
+            halter0 == true;
         }
     } else { 
         controller(20,-1); 
