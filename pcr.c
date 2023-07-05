@@ -17,11 +17,11 @@ float temp_man = 4;
 float tolerancia = 1;
 
 // Setup de tempos para cada fase
-float time_inicial = 20;
-float time_des = 10;
-float time_ane = 15;
-float time_ext = 7;
-float time_man = -1;
+int time_inicial = 20;
+int time_des = 10;
+int time_ane = 15;
+int time_ext = 7;
+int time_man = -1;
 
 // NAO ALTERAR VALORES DAQUI EM DIANTE
 // Setup do valor do ciclo inicial
