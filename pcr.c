@@ -45,25 +45,7 @@ int controller(int target_temp, int timef) {
     
     float temperature = temp.getTemp(); // calcula a temperatura
 
-    if  (temperature == target_temp) {
-        int time0 = 1;
-        if (timef == -1) {
-            time0 = 0; 
-        }
-        digitalWrite(RelePin1, LOW); // desligar o aquecimento
-        digitalWrite(RelePin2, LOW); // desligar o fan
-        Serial.print("Mantendo");
-        Serial.print(target_temp);
-        do {
-            Serial.print("Time");
-            Serial.print(time0);
-            if (time0 == timef) {
-                return 1;
-            }
-            time0++;
-        } while (time0 <= timef);
-        delay(1000);
-    } else if (temperature < (target_temp - tolerancia)) {  
+    if (temperature < (target_temp - tolerancia)) {  
         digitalWrite(RelePin1, HIGH); // liga/deixa ligado o aquecedor
         digitalWrite(RelePin2, LOW); // deixa o fan desligado
         Serial.print("Aumentando a temp");
@@ -73,6 +55,27 @@ int controller(int target_temp, int timef) {
         digitalWrite(RelePin2, HIGH); // ligar o fan
         Serial.print("Diminuindo a temp");
         delay (10000); 
+    } else {
+        int time0 = 1;
+
+        if (timef == -1) {
+            time0 = 0; 
+        }
+
+        digitalWrite(RelePin1, LOW); // desligar o aquecimento
+        digitalWrite(RelePin2, LOW); // desligar o fan
+        Serial.print("Mantendo");
+        Serial.print(target_temp);
+
+        do {
+            Serial.print("Time");
+            Serial.print(time0);
+            if (time0 == timef) {
+                return 1;
+            }
+            time0++;
+            delay(1000);
+        } while (time0 <= timef);
     }
 
     // Imprimindo no monitor serial
