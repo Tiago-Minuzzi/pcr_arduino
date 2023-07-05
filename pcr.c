@@ -93,15 +93,16 @@ void loop() {
     } else if (halter_ciclo == false) {
 
         while(ci <= ciclos) {
-            Serial.print(">>> Cycle %d\n",ci);
+            Serial.print(">>> Cycle");
+            Serial.print(ci);
 
-            Serial.print("--- Denaturation step ---\n");
+            Serial.print("--- Denaturation step ---");
             while(controller(temp_des, time_des) == 0);
 
-            Serial.print("--- Annealing step ---\n");
+            Serial.print("--- Annealing step ---");
             while(controller(temp_ane, time_ane) == 0);
 
-            Serial.print("--- Extension step ---\n");
+            Serial.print("--- Extension step ---");
             while(controller(temp_ext, time_ext) == 0);
 
             ci++;
