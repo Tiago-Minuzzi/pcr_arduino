@@ -110,7 +110,7 @@ void loop() {
 
         if ( ci > ciclos) {
             halter_ciclo = true;
-            Serial.print("### Finalizando\n");
+            Serial.print("### Finalizando");
         }
 
     } else { 
