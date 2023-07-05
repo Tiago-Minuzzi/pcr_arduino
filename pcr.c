@@ -5,8 +5,31 @@ Thermistor temp(1); // termistor conectado na porta A1 (cria o objeto)
 int RelePin1 = 2; // pino ao qual o Módulo Relé fan está conectado
 int RelePin2 = 3; // pino ao qual o Módulo Relé aquecimento está conectado 
                     
-int tolerancia = 1;
+// Numero de ciclos
+int ciclos = 3;
+
+// Setup de temperaturas
+float temp_des = 94;
+float temp_ane = 55;
+float temp_ext = 72;
+float temp_man = 4;
+ 
+float tolerancia = 1;
+
+// Setup de tempos para cada fase
+float time_inicial = 20;
+float time_des = 10;
+float time_ane = 15;
+float time_ext = 7;
+float time_man = -1;
+
+// NAO ALTERAR VALORES DAQUI EM DIANTE
+// Setup do valor do ciclo inicial
+int ci = 1;
+
+// Inibidores de processo
 bool halter0 = false;
+bool halter_ciclo = false;
 
 
 void setup() {
@@ -63,11 +86,33 @@ int controller(int target_temp, int timef) {
 
 void loop() {
     if (halter0 == false) {
-        int f0 = controller(35,60);
+        int f0 = controller(temp_des, time_inicial);
         if (f0 == 1) {
-            halter0 == true;
+            halter0 = true;
         }
+    } else if (halter_ciclo == false) {
+
+        while(ci <= ciclos) {
+            Serial.print(">>> Cycle %d\n",ci);
+
+            Serial.print("--- Denaturation step ---\n");
+            while(controller(temp_des, time_des) == 0);
+
+            Serial.print("--- Annealing step ---\n");
+            while(controller(temp_ane, time_ane) == 0);
+
+            Serial.print("--- Extension step ---\n");
+            while(controller(temp_ext, time_ext) == 0);
+
+            ci++;
+    } 
+
+        if ( ci > ciclos) {
+            halter_ciclo = true;
+            Serial.print("### Finalizando\n");
+        }
+
     } else { 
-        controller(20,-1); 
+        controller(temp_man, -1); 
     }
 }
