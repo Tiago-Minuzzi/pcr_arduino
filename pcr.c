@@ -114,6 +114,6 @@ void loop() {
         }
 
     } else { 
-        controller(temp_man, -1); 
+        controller(temp_man, time_man); 
     }
 }
