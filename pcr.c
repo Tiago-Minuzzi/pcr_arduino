@@ -41,7 +41,7 @@ void setup() {
 }
  
 
-int controller(int target_temp, int timef) {
+int controller(int target_temp, int timef, int ciclo) {
     
     float temperature = temp.getTemp(); // calcula a temperatura
 
@@ -79,6 +79,8 @@ int controller(int target_temp, int timef) {
     }
 
     // Imprimindo no monitor serial
+    Serial.print("- Ciclo: ");
+    Serial.print(ciclo);
     Serial.print("Temperatura: ");
     Serial.print(temperature);
     Serial.println("°C");
@@ -89,7 +91,7 @@ int controller(int target_temp, int timef) {
 
 void loop() {
     if (halter0 == false) {
-        int f0 = controller(temp_des, time_inicial);
+        int f0 = controller(temp_des, time_inicial, 0);
         if (f0 == 1) {
             halter0 = true;
         }
@@ -100,13 +102,13 @@ void loop() {
             Serial.print(ci);
 
             Serial.print("--- Denaturation step ---");
-            while(controller(temp_des, time_des) == 0);
+            while(controller(temp_des, time_des, ci) == 0);
 
             Serial.print("--- Annealing step ---");
-            while(controller(temp_ane, time_ane) == 0);
+            while(controller(temp_ane, time_ane, ci) == 0);
 
             Serial.print("--- Extension step ---");
-            while(controller(temp_ext, time_ext) == 0);
+            while(controller(temp_ext, time_ext, ci) == 0);
 
             ci++;
     } 
@@ -117,6 +119,6 @@ void loop() {
         }
 
     } else { 
-        controller(temp_man, time_man); 
+        controller(temp_man, time_man, 0); 
     }
 }
