@@ -81,6 +81,7 @@ int controller(int target_temp, int timef, int ciclo) {
     // Imprimindo no monitor serial
     Serial.print("- Ciclo: ");
     Serial.print(ciclo);
+    Serial.print("\t");
     Serial.print("Temperatura: ");
     Serial.print(temperature);
     Serial.println("°C");
