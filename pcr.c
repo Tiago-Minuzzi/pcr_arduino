@@ -48,12 +48,12 @@ int controller(int target_temp, int timef, int ciclo) {
     if (temperature < (target_temp - tolerancia)) {  
         digitalWrite(RelePin1, HIGH); // liga/deixa ligado o aquecedor
         digitalWrite(RelePin2, LOW); // deixa o fan desligado
-        Serial.print("Aumentando a temp");
+        Serial.print("Aumentando temp. ");
         delay(1000);
     } else if (temperature > (target_temp + tolerancia)) {
         digitalWrite(RelePin1, LOW); // desligar o aquecimento
         digitalWrite(RelePin2, HIGH); // ligar o fan
-        Serial.print("Diminuindo a temp");
+        Serial.print("Diminuindo temp. ");
         delay (10000); 
     } else {
         int time0 = 1;
@@ -64,8 +64,8 @@ int controller(int target_temp, int timef, int ciclo) {
 
         digitalWrite(RelePin1, LOW); // desligar o aquecimento
         digitalWrite(RelePin2, LOW); // desligar o fan
-        Serial.print("Mantendo");
-        Serial.print(target_temp);
+        Serial.print("Mantendo: ");
+        Serial.println(target_temp);
 
         do {
             Serial.print("Time");
