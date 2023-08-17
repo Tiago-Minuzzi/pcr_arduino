@@ -1,6 +1,10 @@
-#include <Thermistor.h>
+#include <OneWire.h> // inclusão de biblioteca
+#include <DallasTemperature.h> // inclusão de biblioteca
 
-Thermistor temp(1); // termistor conectado na porta A1 (cria o objeto)
+#define DS18B20 7 // define o pino digital utilizado pelo sensor
+
+OneWire ourWire(DS18B20); // configura uma instância onewire para se comunicar com o sensor
+DallasTemperature sensors(&ourWire); // biblioteca DallasTemperature utiliza a OneWire
 
 int RelePin1 = 2; // pino ao qual o Módulo Relé fan está conectado
 int RelePin2 = 3; // pino ao qual o Módulo Relé aquecimento está conectado 
@@ -34,6 +38,7 @@ bool halter_ciclo = false;
 
 void setup() {
     Serial.begin(9600);
+    sensors.begin(); //INICIA O SENSOR
     pinMode(RelePin1, OUTPUT); // seta o pino1 como saída
     pinMode(RelePin2, OUTPUT); // seta o pino2 como saída
     digitalWrite(RelePin1, HIGH); // seta o pino com nivel logico baixo
@@ -43,7 +48,7 @@ void setup() {
 
 int controller(int target_temp, int timef, int ciclo) {
     
-    float temperature = temp.getTemp(); // calcula a temperatura
+    float temperature = sensors.requestTemperatures();// solicita que a função informe a temperatura do sensor
 
     if (temperature < (target_temp - tolerancia)) {  
         digitalWrite(RelePin1, HIGH); // liga/deixa ligado o aquecedor
@@ -83,7 +88,7 @@ int controller(int target_temp, int timef, int ciclo) {
     Serial.print(ciclo);
     Serial.print("\t");
     Serial.print("Temperatura: ");
-    Serial.print(temperature);
+    Serial.print(sensors.getTempCByIndex(0));
     Serial.println("°C");
     delay(1000);
 
