@@ -47,8 +47,9 @@ void setup() {
  
 
 int controller(int target_temp, int timef, int ciclo) {
-    
-    float temperature = sensors.requestTemperatures();// solicita que a função informe a temperatura do sensor
+
+    sensors.requestTemperatures();// solicita que a função informe a temperatura do sensor
+    float temperature = sensors.getTempCByIndex(0)
 
     if (temperature < (target_temp - tolerancia)) {  
         digitalWrite(RelePin1, HIGH); // liga/deixa ligado o aquecedor
@@ -88,7 +89,7 @@ int controller(int target_temp, int timef, int ciclo) {
     Serial.print(ciclo);
     Serial.print("\t");
     Serial.print("Temperatura: ");
-    Serial.print(sensors.getTempCByIndex(0));
+    Serial.print(temperature);
     Serial.println("°C");
     delay(1000);
 
