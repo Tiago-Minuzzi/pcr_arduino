@@ -1,7 +1,13 @@
 #include <OneWire.h> // inclusão de biblioteca
 #include <DallasTemperature.h> // inclusão de biblioteca
-
+#include <Wire.h>     ■ 'Wire.h' file not found
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+#define SCREEN_WIDTH 128 // Largura do display em pixels
+#define SCREEN_HEIGHT 64 // Altura do display em pixels
 #define DS18B20 7 // define o pino digital utilizado pelo sensor
+
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire);
 
 OneWire ourWire(DS18B20); // configura uma instância onewire para se comunicar com o sensor
 DallasTemperature sensors(&ourWire); // biblioteca DallasTemperature utiliza a OneWire
@@ -38,18 +44,24 @@ bool halter_ciclo = false;
 
 void setup() {
     Serial.begin(9600);
+    Wire.begin(); //INICIALIZA A BIBLIOTECA WIRE
     sensors.begin(); //INICIA O SENSOR
     pinMode(RelePin1, OUTPUT); // seta o pino1 como saída
     pinMode(RelePin2, OUTPUT); // seta o pino2 como saída
     digitalWrite(RelePin1, HIGH); // seta o pino com nivel logico baixo
     digitalWrite(RelePin2, HIGH); 
+
+    display.begin(SSD1306_SWITCHCAPVCC, 0x3C); //INICIALIZA O DISPLAY COM ENDEREÇO I2C 0x3C
+    display.setTextColor(WHITE); //DEFINE A COR DO TEXTO
+    display.setTextSize(2); //DEFINE O TAMANHO DA FONTE DO TEXTO
+    display.clearDisplay(); //LIMPA AS INFORMAÇÕES DO DISPLAY 
 }
  
 
 int controller(int target_temp, int timef, int ciclo) {
 
     sensors.requestTemperatures();// solicita que a função informe a temperatura do sensor
-    float temperature = sensors.getTempCByIndex(0)
+    float temperature = sensors.getTempCByIndex(0);
 
     if (temperature < (target_temp - tolerancia)) {  
         digitalWrite(RelePin1, HIGH); // liga/deixa ligado o aquecedor
@@ -91,6 +103,21 @@ int controller(int target_temp, int timef, int ciclo) {
     Serial.print("Temperatura: ");
     Serial.print(temperature);
     Serial.println("°C");
+
+    // Parametros para aparecer no display
+    display.setCursor(10,10); //POSIÇÃO EM QUE O CURSOR IRÁ FAZER A ESCRITA
+    display.print("TESTE"); //ESCREVE O TEXTO NO DISPLAY
+    display.display(); //EFETIVA A ESCRITA NO DISPLAY
+    delay(1500); //INTERVALO DE 1,5 SEGUNDOS
+                 
+    display.clearDisplay(); //LIMPA AS INFORMAÇÕES DO DISPLAY
+    display.setCursor(32,10); //POSIÇÃO EM QUE O CURSOR IRÁ FAZER A ESCRITA
+    display.print(temperature); //ESCREVE O TEXTO NO DISPLAY
+    display.display(); //EFETIVA A ESCRITA NO DISPLAY
+    delay(1000); //INTERVALO DE 3 SEGUNDOS
+
+    display.clearDisplay();
+
     delay(1000);
 
     return 0;
